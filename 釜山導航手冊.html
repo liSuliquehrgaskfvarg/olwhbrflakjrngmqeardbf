@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport"/>
+<title>釜山 6日5夜 路線導航手冊</title>
+<style>
+  :root{
+    --bg:#f4efe6;
+    --card:#ffffff;
+    --ink:#2b241c;
+    --sub:#8a7f6e;
+    --gold:#b8873f;
+    --gold-dark:#8a6a30;
+    --line:#e6ddcb;
+    --blue-dot:#3f6f9c;
+    --pill:#f1e6cf;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    -webkit-tap-highlight-color:transparent;
+  }
+  /* ── HERO AVATAR ── */
+  .hero-banner{
+    background:linear-gradient(150deg,#1a3a5c 0%,#2d6a9f 55%,#b8873f 100%);
+    text-align:center;
+    padding:28px 16px 22px;
+    color:#fff;
+  }
+  .hero-avatar{
+    width:72px;height:72px;
+    border-radius:50%;
+    background:rgba(255,255,255,.18);
+    border:3px solid rgba(255,255,255,.5);
+    display:flex;align-items:center;justify-content:center;
+    font-size:36px;
+    margin:0 auto 10px;
+    box-shadow:0 4px 16px rgba(0,0,0,.2);
+  }
+  .hero-title{ font-size:20px;font-weight:900;letter-spacing:2px;margin-bottom:4px; }
+  .hero-sub{ font-size:18px;opacity:.82;letter-spacing:.5px; }
+  .hero-names{
+    margin-top:10px;
+    display:flex;justify-content:center;gap:8px;flex-wrap:wrap;
+  }
+  .hero-name-tag{
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:999px;
+    padding:4px 12px;font-size:17px;
+  }
+  html{scroll-behavior:smooth;}
+  header.top{
+    position:sticky; top:0; z-index:50;
+    background:linear-gradient(135deg,#1f3a52,#3f6f9c 55%,#c9a05c);
+    color:#fff;
+    padding:14px 16px 10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+  }
+  header.top h1{margin:0 0 2px; font-size:29px; letter-spacing:.5px;}
+  header.top p{margin:0 0 10px; font-size:19px; opacity:.9;}
+  .daynav{
+    display:flex; gap:6px; overflow-x:auto; padding-bottom:2px;
+    scrollbar-width:none;
+  }
+  .daynav::-webkit-scrollbar{display:none;}
+  .daynav a{
+    flex:0 0 auto;
+    background:rgba(255,255,255,.16);
+    color:#fff;
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:999px;
+    padding:6px 12px;
+    font-size:19px;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  main{max-width:520px; margin:0 auto; padding:12px 12px 60px;}
+
+  .tips{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px 16px;
+    margin:14px 0 18px;
+    font-size:20px;
+    line-height:1.7;
+  }
+  .tips h2{font-size:22px; margin:0 0 8px; color:var(--gold-dark);}
+  .tips ul{margin:0; padding-left:18px;}
+  .tips li{margin-bottom:4px;}
+
+  section.day{
+    margin-bottom:26px;
+    scroll-margin-top:96px;
+  }
+  .day-head{
+    background:linear-gradient(120deg,#2b241c,#4a3f2e);
+    color:#f6efe1;
+    border-radius:14px 14px 0 0;
+    padding:14px 16px 12px;
+  }
+  .day-head .tag{font-size:17px; letter-spacing:2px; color:#c9a05c; font-weight:600;}
+  .day-head h2{margin:2px 0 4px; font-size:29px;}
+  .day-head .date{font-size:19px; color:#d8cdb8;}
+  .day-head .area{font-size:17px; color:#a89a7c; margin-top:2px;}
+
+  .timeline{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-top:none;
+    border-radius:0 0 14px 14px;
+    padding:6px 14px 10px;
+  }
+  .stop{
+    position:relative;
+    padding:12px 0 12px 26px;
+    border-bottom:1px dashed var(--line);
+  }
+  .stop:last-child{border-bottom:none;}
+  .stop::before{
+    content:"";
+    position:absolute;
+    left:6px; top:20px;
+    width:9px; height:9px;
+    border-radius:50%;
+    background:var(--blue-dot);
+    box-shadow:0 0 0 3px #eaf1f7;
+  }
+  .stop::after{
+    content:"";
+    position:absolute;
+    left:10px; top:29px; bottom:-1px;
+    width:1px;
+    background:var(--line);
+  }
+  .stop:last-child::after{display:none;}
+
+  .transport-note{
+    display:inline-flex; align-items:center; gap:5px;
+    background:var(--pill);
+    color:var(--gold-dark);
+    font-size:17px;
+    padding:3px 9px;
+    border-radius:999px;
+    margin-bottom:7px;
+  }
+  .stop-time{font-size:17px; color:var(--sub); font-weight:600; margin-bottom:2px;}
+  .stop-title{font-size:23px; font-weight:700; display:flex; align-items:center; gap:6px; margin-bottom:2px;}
+  .stop-kr{font-size:18px; color:var(--sub); margin-bottom:5px;}
+  .stop-note{font-size:19px; color:#5c5343; line-height:1.6; margin-bottom:8px;}
+  .btnrow{display:flex; gap:8px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:4px;
+    font-size:18px; font-weight:600;
+    padding:6px 11px;
+    border-radius:8px;
+    text-decoration:none;
+    border:1px solid var(--line);
+  }
+  .btn.google{background:#eef4fb; color:#2a5a8c; border-color:#cfe0f0;}
+  .btn.naver{background:#e9f8ea; color:#1c8a2a; border-color:#cdeecf;}
+
+  footer{
+    text-align:center;
+    font-size:17px;
+    color:var(--sub);
+    padding:20px 10px 40px;
+  }
+
+  .btn.route{background:#f6ecdd; color:#8a5a1e; border-color:#e9d3ab;}
+
+  .planner{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px 16px 16px;
+    margin:0 0 18px;
+  }
+  .planner h2{font-size:22px; margin:0 0 6px; color:var(--gold-dark);}
+  .planner-note{font-size:18px; color:var(--sub); line-height:1.6; margin:0 0 10px;}
+  .planner form{display:flex; flex-direction:column; gap:8px;}
+  .planner label{font-size:17px; color:var(--sub); font-weight:600; margin-bottom:-4px;}
+  .planner select{
+    width:100%;
+    padding:9px 10px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    background:#fbf8f2;
+    font-size:20px;
+    color:var(--ink);
+  }
+  .planner button{
+    margin-top:6px;
+    padding:11px;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(120deg,#8a5a1e,#c9a05c);
+    color:#fff;
+    font-size:21px;
+    font-weight:700;
+  }
+</style>
+</head>
+<body>
+<div class="hero-banner">
+  <div class="hero-avatar">🌊</div>
+  <div class="hero-title">釜山 HAPPY GO</div>
+  <div class="hero-sub">7/4（六）— 7/9（四）・6天5夜</div>
+  <div class="hero-names">
+    <span class="hero-name-tag">✈️ 全家出動</span>
+    <span class="hero-name-tag">🇰🇷 부산</span>
+    <span class="hero-name-tag">📍 6 Days</span>
+  </div>
+</div>
+<header class="top">
+<h1>釜山 HAPPY GO・路線導航手冊</h1>
+<p>7/4（六）— 7/9（四）・6天5夜｜點地點名稱旁按鈕直接開地圖 App</p>
+<nav class="daynav">
+<a href="#day1">Day1 7/4</a>
+<a href="#day2">Day2 7/5</a>
+<a href="#day3">Day3 7/6</a>
+<a href="#day4">Day4 7/7</a>
+<a href="#day5">Day5 7/8</a>
+<a href="#day6">Day6 7/9</a>
+</nav>
+</header>
+<main>
+<div class="tips">
+<h2>📌 使用前必看</h2>
+<ul>
+<li><b>Google Maps</b> 在韓國無法提供完整的開車與大眾運輸導航（韓國法規限制），只適合「搜尋定位、傳送地點」。</li>
+<li>實際導航／叫車請改用 <b>Naver Map</b>（找路最準）或 <b>KakaoMap</b>；叫計程車建議下載 <b>Kakao T</b> App。</li>
+<li>每個地點都附上 🌐 Google 與 🧭 Naver 兩個按鈕，點開會自動叫出手機地圖 App 或網頁版。</li>
+<li>交通標示：🚕計程車／包車　🚇地鐵　🚋海岸列車・纜車　🚌巴士　🚶步行。時間為預估值，僅供參考。</li>
+<li>建議出發前先把整頁截圖或加入手機書籤，海外若無網路可先預覽文字內容，地圖按鈕則需連網才能開啟。</li>
+</ul>
+</div>
+<div class="planner">
+<h2>🧭 自訂路線規劃（行程異動也能用）</h2>
+<p class="planner-note">行程如果臨時調整順序，直接在這裡選任意兩個地點，就能重新產生路線，不受原本表定順序限制。</p>
+<form action="https://www.google.com/maps/dir/" method="get" target="_blank">
+<input name="api" type="hidden" value="1"/>
+<label>起點</label>
+<select name="origin">
+<option value="">📍 目前位置（不指定起點）</option>
+<optgroup label="Day1 7/4 抵達釜山">
+<option value="Gimhae International Airport Busan">✈️ 金海國際機場抵達</option>
+<option value="Toyoko Inn Busan Haeundae">🏨 東橫INN 釜山海雲台 Check-in</option>
+<option value="Millac the Market Busan">🍽️ Millac the Market</option>
+<option value="Gwangalli Beach Busan">🚁 廣安里海灘・無人機燈光秀</option>
+</optgroup>
+<optgroup label="Day2 7/5 海雲台雙色列車">
+<option value="Who's Who MUMU Bakery Haeundae Busan">🥐 Who's Who MUMU Bakery</option>
+<option value="Haeundae Blueline Park Mipo Station">🚋 海雲台藍線公園・尾浦站</option>
+<option value="Cheongsapo Daritdol Observatory Busan">🌊 青沙浦天空步道・青沙浦站</option>
+<option value="Cheongsapo grilled shellfish street Busan">🐚 青沙浦烤貝村 或 松亭烤鰻魚／烤鴨（選1）</option>
+<option value="Songjeong eel restaurant Busan">🐚 青沙浦烤貝村 或 松亭烤鰻魚／烤鴨（選2）</option>
+<option value="Skyline Luge Busan Songjeong">🎢 Skyline Luge 斜坡滑車</option>
+<option value="개미집 낙지볶음 해운대">🐙 螞蟻家辣炒章魚 或 味贊王鹽烤肉（選1）</option>
+<option value="미찬왕 소금구이 해운대">🐙 螞蟻家辣炒章魚 或 味贊王鹽烤肉（選2）</option>
+<option value="The Bay 101 Busan">🛥️ The Bay 101 遊艇夜景遊</option>
+</optgroup>
+<optgroup label="Day3 7/6 X the Sky・荒嶺山">
+<option value="Haeundae Traditional Market Busan">🍚 海雲台傳統市場・豬肉湯飯</option>
+<option value="Busan X the Sky LCT">🏙️ 釜山 X the Sky 展望台（100樓）</option>
+<option value="Shinsegae Centum City SPA LAND Busan">🍜 Shake Shack + SPA LAND 泡麵</option>
+<option value="Shinsegae Centum City Department Store Busan">⭐ SPA LAND + Smob運動怪物 + 逛街</option>
+<option value="식당3선 센텀시티">🥩 食堂3選</option>
+<option value="Hwangnyeongsan Bongsudae Observatory Busan">🌃 荒嶺山烽火台夜景</option>
+<option value="교촌치킨 해운대">🍗 橋村炸雞 + 生瑪格麗酒</option>
+</optgroup>
+<optgroup label="Day4 7/7 松島・影島">
+<option value="Hotel Ground27 Nampodong Busan">🧳 海雲台退房 → Hotel Ground27</option>
+<option value="EGG DROP Nampodong Busan">🥪 EGG DROP 或 濟州家海鮮粥（選1）</option>
+<option value="제주가해물죽 남포동">🥪 EGG DROP 或 濟州家海鮮粥（選2）</option>
+<option value="Songdo Cable Car Busan">🚡 松島海上纜車</option>
+<option value="Arte Museum Busan Yeongdo">🎨 影島 Arte Museum</option>
+<option value="영도 칼국수 맛집">🍥 影島在地刀削麵／炸醬麵餐廳</option>
+<option value="Miffy Cafe Busan Yeongdo">🐰 Miffy Café 米菲兔主題咖啡廳</option>
+<option value="Huinnyeoul Culture Village Busan">🌅 白淺灘文化村</option>
+<option value="Lotte Department Store Gwangbok Busan">🏬 南浦洞樂天百貨 自由行動</option>
+</optgroup>
+<optgroup label="Day5 7/8 甘川洞・西面">
+<option value="남포 설렁탕 Busan">🍲 南浦雪濃湯</option>
+<option value="Gamcheon Culture Village Busan">🎨 甘川洞文化村</option>
+<option value="PURADAK Chicken Seomyeon Jeonpo Busan">🍗 PURADAK炸雞西面田浦店</option>
+<option value="Frank Burger Seomyeon Busan">🍔 FRANK BURGER</option>
+<option value="영자국수 서면">🍜 英子麵店</option>
+<option value="백년가마솥통닭 부산">🍗 傳統炸全雞（百年加馬鍋）</option>
+<option value="KTOWN4U Seomyeon Busan">💿 KTOWN4U 逛街</option>
+<option value="Running Man Thematic Experience Busan Seomyeon">🎮 Running Man 體驗館</option>
+<option value="백화양곱창 남포동">🔥 百花烤腸</option>
+</optgroup>
+<optgroup label="Day6 7/9 富平市場・機場">
+<option value="Bupyeong Kkangtong Market Busan">🥟 富平罐頭市場</option>
+<option value="Hotel Ground27 Nampodong Busan">🧳 Hotel Ground27 退房</option>
+<option value="Gimhae International Airport Busan">✈️ 前往金海國際機場</option>
+<option value="Gimhae Airport runway viewpoint Daejeo-2dong Busan">📸 金海機場跑道頭拍照點</option>
+</optgroup>
+</select>
+<label>終點</label>
+<select name="destination">
+<optgroup label="Day1 7/4 抵達釜山">
+<option value="Gimhae International Airport Busan">✈️ 金海國際機場抵達</option>
+<option value="Toyoko Inn Busan Haeundae">🏨 東橫INN 釜山海雲台 Check-in</option>
+<option value="Millac the Market Busan">🍽️ Millac the Market</option>
+<option value="Gwangalli Beach Busan">🚁 廣安里海灘・無人機燈光秀</option>
+</optgroup>
+<optgroup label="Day2 7/5 海雲台雙色列車">
+<option value="Who's Who MUMU Bakery Haeundae Busan">🥐 Who's Who MUMU Bakery</option>
+<option value="Haeundae Blueline Park Mipo Station">🚋 海雲台藍線公園・尾浦站</option>
+<option value="Cheongsapo Daritdol Observatory Busan">🌊 青沙浦天空步道・青沙浦站</option>
+<option value="Cheongsapo grilled shellfish street Busan">🐚 青沙浦烤貝村 或 松亭烤鰻魚／烤鴨（選1）</option>
+<option value="Songjeong eel restaurant Busan">🐚 青沙浦烤貝村 或 松亭烤鰻魚／烤鴨（選2）</option>
+<option value="Skyline Luge Busan Songjeong">🎢 Skyline Luge 斜坡滑車</option>
+<option value="개미집 낙지볶음 해운대">🐙 螞蟻家辣炒章魚 或 味贊王鹽烤肉（選1）</option>
+<option value="미찬왕 소금구이 해운대">🐙 螞蟻家辣炒章魚 或 味贊王鹽烤肉（選2）</option>
+<option value="The Bay 101 Busan">🛥️ The Bay 101 遊艇夜景遊</option>
+</optgroup>
+<optgroup label="Day3 7/6 X the Sky・荒嶺山">
+<option value="Haeundae Traditional Market Busan">🍚 海雲台傳統市場・豬肉湯飯</option>
+<option value="Busan X the Sky LCT">🏙️ 釜山 X the Sky 展望台（100樓）</option>
+<option value="Shinsegae Centum City SPA LAND Busan">🍜 Shake Shack + SPA LAND 泡麵</option>
+<option value="Shinsegae Centum City Department Store Busan">⭐ SPA LAND + Smob運動怪物 + 逛街</option>
+<option value="식당3선 센텀시티">🥩 食堂3選</option>
+<option value="Hwangnyeongsan Bongsudae Observatory Busan">🌃 荒嶺山烽火台夜景</option>
+<option value="교촌치킨 해운대">🍗 橋村炸雞 + 生瑪格麗酒</option>
+</optgroup>
+<optgroup label="Day4 7/7 松島・影島">
+<option value="Hotel Ground27 Nampodong Busan">🧳 海雲台退房 → Hotel Ground27</option>
+<option value="EGG DROP Nampodong Busan">🥪 EGG DROP 或 濟州家海鮮粥（選1）</option>
+<option value="제주가해물죽 남포동">🥪 EGG DROP 或 濟州家海鮮粥（選2）</option>
+<option value="Songdo Cable Car Busan">🚡 松島海上纜車</option>
+<option value="Arte Museum Busan Yeongdo">🎨 影島 Arte Museum</option>
+<option value="영도 칼국수 맛집">🍥 影島在地刀削麵／炸醬麵餐廳</option>
+<option value="Miffy Cafe Busan Yeongdo">🐰 Miffy Café 米菲兔主題咖啡廳</option>
+<option value="Huinnyeoul Culture Village Busan">🌅 白淺灘文化村</option>
+<option value="Lotte Department Store Gwangbok Busan">🏬 南浦洞樂天百貨 自由行動</option>
+</optgroup>
+<optgroup label="Day5 7/8 甘川洞・西面">
+<option value="남포 설렁탕 Busan">🍲 南浦雪濃湯</option>
+<option value="Gamcheon Culture Village Busan">🎨 甘川洞文化村</option>
+<option value="PURADAK Chicken Seomyeon Jeonpo Busan">🍗 PURADAK炸雞西面田浦店</option>
+<option value="Frank Burger Seomyeon Busan">🍔 FRANK BURGER</option>
+<option value="영자국수 서면">🍜 英子麵店</option>
+<option value="백년가마솥통닭 부산">🍗 傳統炸全雞（百年加馬鍋）</option>
+<option value="KTOWN4U Seomyeon Busan">💿 KTOWN4U 逛街</option>
+<option value="Running Man Thematic Experience Busan Seomyeon">🎮 Running Man 體驗館</option>
+<option value="백화양곱창 남포동">🔥 百花烤腸</option>
+</optgroup>
+<optgroup label="Day6 7/9 富平市場・機場">
+<option value="Bupyeong Kkangtong Market Busan">🥟 富平罐頭市場</option>
+<option value="Hotel Ground27 Nampodong Busan">🧳 Hotel Ground27 退房</option>
+<option value="Gimhae International Airport Busan">✈️ 前往金海國際機場</option>
+<option value="Gimhae Airport runway viewpoint Daejeo-2dong Busan">📸 金海機場跑道頭拍照點</option>
+</optgroup>
+</select>
+<label>交通方式</label>
+<select name="travelmode">
+<option value="driving">🚕 計程車／開車</option>
+<option value="walking">🚶 步行</option>
+<option value="transit">🚇 大眾運輸</option>
+<option value="bicycling">🚲 騎車</option>
+</select>
+<button type="submit">🧭 產生路線並開啟 Google 地圖</button>
+</form>
+</div>
+
+<!-- ================= DAY 1 ================= -->
+<section class="day" id="day1">
+<div class="day-head">
+<div class="tag">DAY 01</div>
+<h2>抵達釜山・廣安里浪漫微醺之夜</h2>
+<div class="date">7/4（六）</div>
+<div class="area">海雲台 Haeundae・廣安里 Gwangalli</div>
+</div>
+<div class="timeline">
+<div class="stop">
+<div class="stop-time">17:55</div>
+<div class="stop-title">✈️ 金海國際機場抵達</div>
+<div class="stop-kr">김해국제공항 Gimhae International Airport</div>
+<div class="stop-note">入境後包車或搭計程車前往飯店</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Gimhae%20International%20Airport%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EA%B9%80%ED%95%B4%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD" rel="noopener" target="_blank">🧭 Naver</a>
+</div>
+</div>
+<div class="stop">
+<span class="transport-note">🚕 計程車／包車・約40-50分鐘</span>
+<div class="stop-title">🏨 東橫INN 釜山海雲台 Check-in</div>
+<div class="stop-kr">도요코인 부산 해운대점 Toyoko Inn Busan Haeundae</div>
+<div class="stop-note">辦理入住，放行李稍作休息</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Toyoko%20Inn%20Busan%20Haeundae" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EB%8F%84%EC%9A%94%EC%BD%94%EC%9D%B8%20%EB%B6%80%EC%82%B0%20%ED%95%B4%EC%9A%B4%EB%8C%80%EC%A0%90" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Gimhae%20International%20Airport%20Busan&amp;destination=Toyoko%20Inn%20Busan%20Haeundae&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚕 計程車・約15-20分鐘</span>
+<div class="stop-time">晚餐</div>
+<div class="stop-title">🍽️ Millac the Market</div>
+<div class="stop-kr">밀락더마켓</div>
+<div class="stop-note">複合式文青廣場，海鮮、肉類、美式漢堡皆有，坐在中央階梯看廣安大橋燈光用餐</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Millac%20the%20Market%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EB%B0%80%EB%9D%BD%EB%8D%94%EB%A7%88%EC%BC%93" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Toyoko%20Inn%20Busan%20Haeundae&amp;destination=Millac%20the%20Market%20Busan&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚶 步行／短程計程車・約10分鐘</span>
+<div class="stop-time">22:00</div>
+<div class="stop-title">🚁 廣安里海灘・無人機燈光秀</div>
+<div class="stop-kr">광안리해수욕장</div>
+<div class="stop-note">看完後在海灘旁露天酒吧小酌一杯</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Gwangalli%20Beach%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EA%B4%91%EC%95%88%EB%A6%AC%ED%95%B4%EC%88%98%EC%9A%95%EC%9E%A5" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Millac%20the%20Market%20Busan&amp;destination=Gwangalli%20Beach%20Busan&amp;travelmode=walking" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+</div>
+</section>
+<!-- ================= DAY 2 ================= -->
+<section class="day" id="day2">
+<div class="day-head">
+<div class="tag">DAY 02</div>
+<h2>海雲台雙色列車・斜坡滑車雙體驗</h2>
+<div class="date">7/5（日）</div>
+<div class="area">海雲台・青沙浦・松亭</div>
+</div>
+<div class="timeline">
+<div class="stop">
+<span class="transport-note">🚶 從飯店步行・約10分鐘</span>
+<div class="stop-time">早午餐</div>
+<div class="stop-title">🥐 Who's Who MUMU Bakery</div>
+<div class="stop-kr">후즈후 무무베이커리 해운대</div>
+<div class="stop-note">海雲台人氣麵包咖啡廳，出發前先飽餐一頓再搭海岸列車</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Who%27s%20Who%20MUMU%20Bakery%20Haeundae%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%ED%9B%84%EC%A6%88%ED%9B%84%20%EB%AC%B4%EB%AC%B4%EB%B2%A0%EC%9D%B4%EC%BB%A4%EB%A6%AC%20%ED%95%B4%EC%9A%B4%EB%8C%80" rel="noopener" target="_blank">🧭 Naver</a>
+</div>
+</div>
+<div class="stop">
+<span class="transport-note">🚶 步行・約10分鐘</span>
+<div class="stop-time">上午</div>
+<div class="stop-title">🚋 海雲台藍線公園・尾浦站</div>
+<div class="stop-kr">해운대 블루라인파크 미포정거장</div>
+<div class="stop-note">搭乘海岸列車／天空膠囊列車，尾浦→青沙浦，沿海岸線觀景約15分鐘</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Haeundae%20Blueline%20Park%20Mipo%20Station" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%ED%95%B4%EC%9A%B4%EB%8C%80%20%EB%B8%94%EB%A3%A8%EB%9D%BC%EC%9D%B8%ED%8C%8C%ED%81%AC%20%EB%AF%B8%ED%8F%AC%EC%A0%95%EA%B1%B0%EC%9E%A5" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Who%27s%20Who%20MUMU%20Bakery%20Haeundae%20Busan&amp;destination=Haeundae%20Blueline%20Park%20Mipo%20Station&amp;travelmode=walking" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚋 海岸列車・約15分鐘</span>
+<div class="stop-title">🌊 青沙浦天空步道・青沙浦站</div>
+<div class="stop-kr">청사포 다릿돌전망대</div>
+<div class="stop-note">抵達青沙浦後散步天空步道，海岸列車拍照</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Cheongsapo%20Daritdol%20Observatory%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EC%B2%AD%EC%82%AC%ED%8F%AC%20%EB%8B%A4%EB%A6%BF%EB%8F%8C%EC%A0%84%EB%A7%9D%EB%8C%80" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Haeundae%20Blueline%20Park%20Mipo%20Station&amp;destination=Cheongsapo%20Daritdol%20Observatory%20Busan&amp;travelmode=transit" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚶 步行 約5分鐘（選A）／🚋 Beach Train 約10分鐘（選B）</span>
+<div class="stop-time">午餐（2選1）</div>
+<div class="stop-title">🐚 青沙浦烤貝村 或 松亭烤鰻魚／烤鴨</div>
+<div class="stop-kr">청사포 조개구이 / 송정 장어구이</div>
+<div class="stop-note">選項A：烤貝海鮮或烤肉、韓式拉麵，適合不吃海鮮的成員｜選項B：搭Beach Train至松亭後先用餐再玩滑車</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Cheongsapo%20grilled%20shellfish%20street%20Busan" rel="noopener" target="_blank">🌐 選項A</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EC%B2%AD%EC%82%AC%ED%8F%AC%20%EC%A1%B0%EA%B0%9C%EA%B5%AC%EC%9D%B4" rel="noopener" target="_blank">🧭 選項A</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Cheongsapo%20Daritdol%20Observatory%20Busan&amp;destination=Cheongsapo%20grilled%20shellfish%20street%20Busan&amp;travelmode=transit" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+<div class="btnrow" style="margin-top:6px;">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Songjeong%20eel%20restaurant%20Busan" rel="noopener" target="_blank">🌐 選項B</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EC%86%A1%EC%A0%95%20%EC%9E%A5%EC%96%B4%EA%B5%AC%EC%9D%B4" rel="noopener" target="_blank">🧭 選項B</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Cheongsapo%20Daritdol%20Observatory%20Busan&amp;destination=Songjeong%20eel%20restaurant%20Busan&amp;travelmode=transit" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚕 從松亭站計程車・約10分鐘</span>
+<div class="stop-time">14:30</div>
+<div class="stop-title">🎢 Skyline Luge 斜坡滑車</div>
+<div class="stop-kr">스카이라인루지 부산</div>
+<div class="stop-note">全家挑戰山坡賽道！搭纜車上山、滑車下山</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Skyline%20Luge%20Busan%20Songjeong" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EC%8A%A4%EC%B9%B4%EC%9D%B4%EB%9D%BC%EC%9D%B8%EB%A3%A8%EC%A7%80%20%EB%B6%80%EC%82%B0" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Songjeong%20eel%20restaurant%20Busan&amp;destination=Skyline%20Luge%20Busan%20Songjeong&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚕 計程車返回海雲台・約20分鐘</span>
+<div class="stop-time">晚餐（2選1）</div>
+<div class="stop-title">🐙 螞蟻家辣炒章魚 或 味贊王鹽烤肉</div>
+<div class="stop-kr">개미집 낙지볶음 / 미찬왕 소금구이</div>
+<div class="stop-note">海雲台人氣辣炒章魚，香辣下飯；或鹽烤肉豬肉原味鮮甜，配酒一流</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=%EA%B0%9C%EB%AF%B8%EC%A7%91%20%EB%82%99%EC%A7%80%EB%B3%B6%EC%9D%8C%20%ED%95%B4%EC%9A%B4%EB%8C%80" rel="noopener" target="_blank">🌐 選項A</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EA%B0%9C%EB%AF%B8%EC%A7%91%20%EB%82%99%EC%A7%80%EB%B3%B6%EC%9D%8C%20%ED%95%B4%EC%9A%B4%EB%8C%80" rel="noopener" target="_blank">🧭 選項A</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Skyline%20Luge%20Busan%20Songjeong&amp;destination=%EA%B0%9C%EB%AF%B8%EC%A7%91%20%EB%82%99%EC%A7%80%EB%B3%B6%EC%9D%8C%20%ED%95%B4%EC%9A%B4%EB%8C%80&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+<div class="btnrow" style="margin-top:6px;">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=%EB%AF%B8%EC%B0%AC%EC%99%95%20%EC%86%8C%EA%B8%88%EA%B5%AC%EC%9D%B4%20%ED%95%B4%EC%9A%B4%EB%8C%80" rel="noopener" target="_blank">🌐 選項B</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EB%AF%B8%EC%B0%AC%EC%99%95%20%EC%86%8C%EA%B8%88%EA%B5%AC%EC%9D%B4%20%ED%95%B4%EC%9A%B4%EB%8C%80" rel="noopener" target="_blank">🧭 選項B</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Skyline%20Luge%20Busan%20Songjeong&amp;destination=%EB%AF%B8%EC%B0%AC%EC%99%95%20%EC%86%8C%EA%B8%88%EA%B5%AC%EC%9D%B4%20%ED%95%B4%EC%9A%B4%EB%8C%80&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚕 計程車・約15分鐘</span>
+<div class="stop-time">21:30</div>
+<div class="stop-title">🛥️ The Bay 101 遊艇夜景遊</div>
+<div class="stop-kr">더베이101</div>
+<div class="stop-note">行程50-60分鐘，沿途行經冬柏島、Marine City高樓群與廣安大橋；晚間航次含海上煙火</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=The%20Bay%20101%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EB%8D%94%EB%B2%A0%EC%9D%B4101" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=%EB%AF%B8%EC%B0%AC%EC%99%95%20%EC%86%8C%EA%B8%88%EA%B5%AC%EC%9D%B4%20%ED%95%B4%EC%9A%B4%EB%8C%80&amp;destination=The%20Bay%20101%20Busan&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+</div>
+</section>
+<!-- ================= DAY 3 ================= -->
+<section class="day" id="day3">
+<div class="day-head">
+<div class="tag">DAY 03</div>
+<h2>X the Sky 高空展望・新世界極致體驗・荒嶺山百萬夜景</h2>
+<div class="date">7/6（一）</div>
+<div class="area">海雲台・Centum City・荒嶺山</div>
+</div>
+<div class="timeline">
+<div class="stop">
+<span class="transport-note">🚶 從飯店步行・約10分鐘</span>
+<div class="stop-time">早餐</div>
+<div class="stop-title">🍚 海雲台傳統市場・豬肉湯飯</div>
+<div class="stop-kr">해운대시장 돼지국밥</div>
+<div class="stop-note">釜山最具代表性靈魂美食，濃郁豬骨高湯，不吃海鮮也完全適合</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Haeundae%20Traditional%20Market%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%ED%95%B4%EC%9A%B4%EB%8C%80%EC%8B%9C%EC%9E%A5" rel="noopener" target="_blank">🧭 Naver</a>
+</div>
+</div>
+<div class="stop">
+<span class="transport-note">🚶 步行・約10分鐘</span>
+<div class="stop-time">10:00</div>
+<div class="stop-title">🏙️ 釜山 X the Sky 展望台（100樓）</div>
+<div class="stop-kr">부산 엑스 더 스카이</div>
+<div class="stop-note">俯瞰海雲台白沙灘；全世界最高星巴克打卡</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Busan%20X%20the%20Sky%20LCT" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EB%B6%80%EC%82%B0%20%EC%97%91%EC%8A%A4%20%EB%8D%94%20%EC%8A%A4%EC%B9%B4%EC%9D%B4" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Haeundae%20Traditional%20Market%20Busan&amp;destination=Busan%20X%20the%20Sky%20LCT&amp;travelmode=walking" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚶 步行・約10-15分鐘</span>
+<div class="stop-time">午餐</div>
+<div class="stop-title">🍜 Shake Shack + SPA LAND 泡麵</div>
+<div class="stop-kr">신세계 센텀시티 스파랜드</div>
+<div class="stop-note">SPA內部餐廳享用泡麵，Shake Shack點心，邊泡澡邊補充能量，免出館</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Shinsegae%20Centum%20City%20SPA%20LAND%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EC%8B%A0%EC%84%B8%EA%B3%84%20%EC%84%BC%ED%85%80%EC%8B%9C%ED%8B%B0%20%EC%8A%A4%ED%8C%8C%EB%9E%9C%EB%93%9C" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Busan%20X%20the%20Sky%20LCT&amp;destination=Shinsegae%20Centum%20City%20SPA%20LAND%20Busan&amp;travelmode=walking" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<div class="stop-time">下午（同棟）</div>
+<div class="stop-title">⭐ SPA LAND + Smob運動怪物 + 逛街</div>
+<div class="stop-kr">신세계백화점 센텀시티점</div>
+<div class="stop-note">頂級汗蒸幕放鬆・Smob運動怪物主題樂園・全亞洲最大百貨一館搞定全家需求</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Shinsegae%20Centum%20City%20Department%20Store%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EC%8B%A0%EC%84%B8%EA%B3%84%EB%B0%B1%ED%99%94%EC%A0%90%20%EC%84%BC%ED%85%80%EC%8B%9C%ED%8B%B0%EC%A0%90" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Shinsegae%20Centum%20City%20SPA%20LAND%20Busan&amp;destination=Shinsegae%20Centum%20City%20Department%20Store%20Busan&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚶 Centum City附近</span>
+<div class="stop-time">晚餐</div>
+<div class="stop-title">🥩 食堂3選</div>
+<div class="stop-kr">식당3선</div>
+<div class="stop-note">免動手炙燒調味烤豬排骨、烤牛肉與冷麵</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=%EC%8B%9D%EB%8B%B93%EC%84%A0%20%EC%84%BC%ED%85%80%EC%8B%9C%ED%8B%B0" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EC%8B%9D%EB%8B%B93%EC%84%A0%20%EC%84%BC%ED%85%80%EC%8B%9C%ED%8B%B0" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Shinsegae%20Centum%20City%20Department%20Store%20Busan&amp;destination=%EC%8B%9D%EB%8B%B93%EC%84%A0%20%EC%84%BC%ED%85%80%EC%8B%9C%ED%8B%B0&amp;travelmode=walking" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚕 計程車・約20分鐘（山路無大眾運輸）</span>
+<div class="stop-time">20:00</div>
+<div class="stop-title">🌃 荒嶺山烽火台夜景</div>
+<div class="stop-kr">황령산 봉수전망대</div>
+<div class="stop-note">360°無死角，廣安大橋＋釜山港＋西面夜景，釜山第一夜景聖地</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Hwangnyeongsan%20Bongsudae%20Observatory%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%ED%99%A9%EB%A0%B9%EC%82%B0%20%EB%B4%89%EC%88%98%EC%A0%84%EB%A7%9D%EB%8C%80" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=%EC%8B%9D%EB%8B%B93%EC%84%A0%20%EC%84%BC%ED%85%80%EC%8B%9C%ED%8B%B0&amp;destination=Hwangnyeongsan%20Bongsudae%20Observatory%20Busan&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚕 計程車返回飯店・約20分鐘</span>
+<div class="stop-time">宵夜外送</div>
+<div class="stop-title">🍗 橋村炸雞 + 生瑪格麗酒</div>
+<div class="stop-kr">교촌치킨 배달</div>
+<div class="stop-note">看完夜景回飯店外送，蜂蜜醬＆原味炸雞配冰涼生馬格利</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=%EA%B5%90%EC%B4%8C%EC%B9%98%ED%82%A8%20%ED%95%B4%EC%9A%B4%EB%8C%80" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EA%B5%90%EC%B4%8C%EC%B9%98%ED%82%A8%20%ED%95%B4%EC%9A%B4%EB%8C%80" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Hwangnyeongsan%20Bongsudae%20Observatory%20Busan&amp;destination=%EA%B5%90%EC%B4%8C%EC%B9%98%ED%82%A8%20%ED%95%B4%EC%9A%B4%EB%8C%80&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+</div>
+</section>
+<!-- ================= DAY 4 ================= -->
+<section class="day" id="day4">
+<div class="day-head">
+<div class="tag">DAY 04</div>
+<h2>松島海上纜車・影島美學與文化巡禮</h2>
+<div class="date">7/7（二）</div>
+<div class="area">南浦洞・松島・影島</div>
+</div>
+<div class="timeline">
+<div class="stop">
+<span class="transport-note">🚕／🚇 計程車或地鐵2號線轉1號線・約30-40分鐘</span>
+<div class="stop-time">09:00</div>
+<div class="stop-title">🧳 海雲台退房 → Hotel Ground27</div>
+<div class="stop-kr">호텔그라운드27 남포동</div>
+<div class="stop-note">辦理退房，前往南浦洞寄放行李</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Hotel%20Ground27%20Nampodong%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%ED%98%B8%ED%85%94%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C27" rel="noopener" target="_blank">🧭 Naver</a>
+</div>
+</div>
+<div class="stop">
+<span class="transport-note">🚶 步行・約5-10分鐘</span>
+<div class="stop-time">早午餐（2選1）</div>
+<div class="stop-title">🥪 EGG DROP 或 濟州家海鮮粥</div>
+<div class="stop-kr">에그드랍 / 제주가해물죽</div>
+<div class="stop-note">韓國人氣蛋料理三明治；或清爽濃郁海鮮粥，出發影島前墊胃</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=EGG%20DROP%20Nampodong%20Busan" rel="noopener" target="_blank">🌐 選項A</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EC%97%90%EA%B7%B8%EB%93%9C%EB%9E%8D%20%EB%82%A8%ED%8F%AC%EB%8F%99" rel="noopener" target="_blank">🧭 選項A</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Hotel%20Ground27%20Nampodong%20Busan&amp;destination=EGG%20DROP%20Nampodong%20Busan&amp;travelmode=walking" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+<div class="btnrow" style="margin-top:6px;">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=%EC%A0%9C%EC%A3%BC%EA%B0%80%ED%95%B4%EB%AC%BC%EC%A3%BD%20%EB%82%A8%ED%8F%AC%EB%8F%99" rel="noopener" target="_blank">🌐 選項B</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EC%A0%9C%EC%A3%BC%EA%B0%80%ED%95%B4%EB%AC%BC%EC%A3%BD%20%EB%82%A8%ED%8F%AC%EB%8F%99" rel="noopener" target="_blank">🧭 選項B</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Hotel%20Ground27%20Nampodong%20Busan&amp;destination=%EC%A0%9C%EC%A3%BC%EA%B0%80%ED%95%B4%EB%AC%BC%EC%A3%BD%20%EB%82%A8%ED%8F%AC%EB%8F%99&amp;travelmode=walking" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚕 計程車・約10-15分鐘</span>
+<div class="stop-time">10:30</div>
+<div class="stop-title">🚡 松島海上纜車</div>
+<div class="stop-kr">송도해상케이블카</div>
+<div class="stop-note">水晶車廂透明地板直視海浪；松島龍宮雲橋散步拍海景</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Songdo%20Cable%20Car%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EC%86%A1%EB%8F%84%ED%95%B4%EC%83%81%EC%BC%80%EC%9D%B4%EB%B8%94%EC%B9%B4" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=%EC%A0%9C%EC%A3%BC%EA%B0%80%ED%95%B4%EB%AC%BC%EC%A3%BD%20%EB%82%A8%ED%8F%AC%EB%8F%99&amp;destination=Songdo%20Cable%20Car%20Busan&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚕 計程車・約10分鐘</span>
+<div class="stop-time">13:30</div>
+<div class="stop-title">🎨 影島 Arte Museum</div>
+<div class="stop-kr">아르떼뮤지엄 부산</div>
+<div class="stop-note">頂級沉浸式光影美術館，數位海浪、瀑布與極光</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Arte%20Museum%20Busan%20Yeongdo" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EC%95%84%EB%A5%B4%EB%96%BC%EB%AE%A4%EC%A7%80%EC%97%84%20%EB%B6%80%EC%82%B0" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Songdo%20Cable%20Car%20Busan&amp;destination=Arte%20Museum%20Busan%20Yeongdo&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚶 步行・約5分鐘</span>
+<div class="stop-time">午晚餐</div>
+<div class="stop-title">🍥 影島在地刀削麵／炸醬麵餐廳</div>
+<div class="stop-kr">영도 칼국수 짜장면 맛집</div>
+<div class="stop-note">逛完美術館後就近享用，刀削麵Q彈，炸醬麵小孩必點</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=%EC%98%81%EB%8F%84%20%EC%B9%BC%EA%B5%AD%EC%88%98%20%EB%A7%9B%EC%A7%91" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EC%98%81%EB%8F%84%20%EC%B9%BC%EA%B5%AD%EC%88%98%20%EB%A7%9B%EC%A7%91" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Arte%20Museum%20Busan%20Yeongdo&amp;destination=%EC%98%81%EB%8F%84%20%EC%B9%BC%EA%B5%AD%EC%88%98%20%EB%A7%9B%EC%A7%91&amp;travelmode=walking" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚕 計程車・約10分鐘</span>
+<div class="stop-time">15:30</div>
+<div class="stop-title">🐰 Miffy Café 米菲兔主題咖啡廳</div>
+<div class="stop-kr">미피카페 부산영도점</div>
+<div class="stop-note">頂樓無敵釜山港海景＋超萌網美甜點飲料</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Miffy%20Cafe%20Busan%20Yeongdo" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EB%AF%B8%ED%94%BC%EC%B9%B4%ED%8E%98%20%EB%B6%80%EC%82%B0%EC%98%81%EB%8F%84%EC%A0%90" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=%EC%98%81%EB%8F%84%20%EC%B9%BC%EA%B5%AD%EC%88%98%20%EB%A7%9B%EC%A7%91&amp;destination=Miffy%20Cafe%20Busan%20Yeongdo&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚶 步行・約10-15分鐘</span>
+<div class="stop-time">17:00</div>
+<div class="stop-title">🌅 白淺灘文化村</div>
+<div class="stop-kr">흰여울문화마을</div>
+<div class="stop-note">沿海崖散步，捕捉夕陽海景，逛文青選物店</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Huinnyeoul%20Culture%20Village%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%ED%9D%B0%EC%97%AC%EC%9A%B8%EB%AC%B8%ED%99%94%EB%A7%88%EC%9D%84" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Miffy%20Cafe%20Busan%20Yeongdo&amp;destination=Huinnyeoul%20Culture%20Village%20Busan&amp;travelmode=walking" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚕 計程車・約15分鐘</span>
+<div class="stop-time">晚餐</div>
+<div class="stop-title">🏬 南浦洞樂天百貨 自由行動</div>
+<div class="stop-kr">롯데백화점 광복점</div>
+<div class="stop-note">百貨內各樓層餐廳自選，也可外帶回Hotel Ground27輕鬆餐敘</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Lotte%20Department%20Store%20Gwangbok%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EB%A1%AF%EB%8D%B0%EB%B0%B1%ED%99%94%EC%A0%90%20%EA%B4%91%EB%B3%B5%EC%A0%90" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Huinnyeoul%20Culture%20Village%20Busan&amp;destination=Lotte%20Department%20Store%20Gwangbok%20Busan&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+</div>
+</section>
+<!-- ================= DAY 5 ================= -->
+<section class="day" id="day5">
+<div class="day-head">
+<div class="tag">DAY 05</div>
+<h2>甘川洞文化村・西面潮流血拼</h2>
+<div class="date">7/8（三）</div>
+<div class="area">南浦洞・甘川洞・西面</div>
+</div>
+<div class="timeline">
+<div class="stop">
+<span class="transport-note">🚶 從Ground27步行</span>
+<div class="stop-time">早餐</div>
+<div class="stop-title">🍲 南浦雪濃湯</div>
+<div class="stop-kr">남포 설렁탕</div>
+<div class="stop-note">清淡濃郁牛骨湯，早起暖胃首選</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=%EB%82%A8%ED%8F%AC%20%EC%84%A4%EB%A0%81%ED%83%95%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EB%82%A8%ED%8F%AC%20%EC%84%A4%EB%A0%81%ED%83%95" rel="noopener" target="_blank">🧭 Naver</a>
+</div>
+</div>
+<div class="stop">
+<span class="transport-note">🚕 計程車・約15分鐘</span>
+<div class="stop-time">上午</div>
+<div class="stop-title">🎨 甘川洞文化村</div>
+<div class="stop-kr">감천문화마을</div>
+<div class="stop-note">韓國馬丘比丘，彩色階梯屋、小王子雕像拍照</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Gamcheon%20Culture%20Village%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EA%B0%90%EC%B2%9C%EB%AC%B8%ED%99%94%EB%A7%88%EC%9D%84" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=%EB%82%A8%ED%8F%AC%20%EC%84%A4%EB%A0%81%ED%83%95%20Busan&amp;destination=Gamcheon%20Culture%20Village%20Busan&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚕／🚇 計程車或地鐵・約20分鐘</span>
+<div class="stop-time">午餐・西面自由行動（4選1）</div>
+<div class="stop-title">🍗 PURADAK炸雞西面田浦店</div>
+<div class="stop-kr">푸라닭 서면 전포점</div>
+<div class="stop-note">IU代言，韓國人氣炸雞品牌，酥脆多汁</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=PURADAK%20Chicken%20Seomyeon%20Jeonpo%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%ED%91%B8%EB%9D%BC%EB%8B%AD%20%EC%84%9C%EB%A9%B4%20%EC%A0%84%ED%8F%AC%EC%A0%90" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Gamcheon%20Culture%20Village%20Busan&amp;destination=PURADAK%20Chicken%20Seomyeon%20Jeonpo%20Busan&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<div class="stop-title">🍔 FRANK BURGER</div>
+<div class="stop-kr">프랭크버거 서면</div>
+<div class="stop-note">韓國在地品牌，Shake Shack平替，新鮮牛肉漢堡</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Frank%20Burger%20Seomyeon%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%ED%94%84%EB%9E%AD%ED%81%AC%EB%B2%84%EA%B1%B0%20%EC%84%9C%EB%A9%B4" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=PURADAK%20Chicken%20Seomyeon%20Jeonpo%20Busan&amp;destination=Frank%20Burger%20Seomyeon%20Busan&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<div class="stop-title">🍜 英子麵店</div>
+<div class="stop-kr">영자국수</div>
+<div class="stop-note">手工刀切麵，樸實道地的韓國家常味</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=%EC%98%81%EC%9E%90%EA%B5%AD%EC%88%98%20%EC%84%9C%EB%A9%B4" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EC%98%81%EC%9E%90%EA%B5%AD%EC%88%98" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Frank%20Burger%20Seomyeon%20Busan&amp;destination=%EC%98%81%EC%9E%90%EA%B5%AD%EC%88%98%20%EC%84%9C%EB%A9%B4&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<div class="stop-title">🍗 傳統炸全雞（百年加馬鍋）</div>
+<div class="stop-kr">백년가마솥통닭</div>
+<div class="stop-note">百年老店加馬鍋整隻炸雞，皮脆肉嫩，份量十足</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=%EB%B0%B1%EB%85%84%EA%B0%80%EB%A7%88%EC%86%A5%ED%86%B5%EB%8B%AD%20%EB%B6%80%EC%82%B0" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EB%B0%B1%EB%85%84%EA%B0%80%EB%A7%88%EC%86%A5%ED%86%B5%EB%8B%AD" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=%EC%98%81%EC%9E%90%EA%B5%AD%EC%88%98%20%EC%84%9C%EB%A9%B4&amp;destination=%EB%B0%B1%EB%85%84%EA%B0%80%EB%A7%88%EC%86%A5%ED%86%B5%EB%8B%AD%20%EB%B6%80%EC%82%B0&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚶 西面商圈內步行</span>
+<div class="stop-time">下午</div>
+<div class="stop-title">💿 KTOWN4U 逛街</div>
+<div class="stop-kr">케이타운포유 서면</div>
+<div class="stop-note">女兒＆媽媽：大買KPOP專輯＆周邊，逛最新韓系潮流服飾</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=KTOWN4U%20Seomyeon%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EC%BC%80%EC%9D%B4%ED%83%80%EC%9A%B4%ED%8F%AC%EC%9C%A0%20%EC%84%9C%EB%A9%B4" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=%EB%B0%B1%EB%85%84%EA%B0%80%EB%A7%88%EC%86%A5%ED%86%B5%EB%8B%AD%20%EB%B6%80%EC%82%B0&amp;destination=KTOWN4U%20Seomyeon%20Busan&amp;travelmode=walking" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚶 西面商圈內步行</span>
+<div class="stop-time">下午</div>
+<div class="stop-title">🎮 Running Man 體驗館</div>
+<div class="stop-kr">런닝맨 체험관 부산</div>
+<div class="stop-note">限時1小時闖關，體力＆反應力大挑戰，全家同樂！</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Running%20Man%20Thematic%20Experience%20Busan%20Seomyeon" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EB%9F%B0%EB%8B%9D%EB%A7%A8%20%EC%B2%B4%ED%97%98%EA%B4%80%20%EB%B6%80%EC%82%B0" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=KTOWN4U%20Seomyeon%20Busan&amp;destination=Running%20Man%20Thematic%20Experience%20Busan%20Seomyeon&amp;travelmode=walking" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚇 地鐵1號線 西面→南浦・約15分鐘</span>
+<div class="stop-time">晚餐</div>
+<div class="stop-title">🔥 百花烤腸</div>
+<div class="stop-kr">백화양곱창</div>
+<div class="stop-note">南浦洞人氣烤腸名店，牛小腸＆大腸現烤，嚼勁十足，配燒酒超對味</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=%EB%B0%B1%ED%99%94%EC%96%91%EA%B3%B1%EC%B0%BD%20%EB%82%A8%ED%8F%AC%EB%8F%99" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EB%B0%B1%ED%99%94%EC%96%91%EA%B3%B1%EC%B0%BD" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Running%20Man%20Thematic%20Experience%20Busan%20Seomyeon&amp;destination=%EB%B0%B1%ED%99%94%EC%96%91%EA%B3%B1%EC%B0%BD%20%EB%82%A8%ED%8F%AC%EB%8F%99&amp;travelmode=transit" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+</div>
+</section>
+<!-- ================= DAY 6 ================= -->
+<section class="day" id="day6">
+<div class="day-head">
+<div class="tag">DAY 06</div>
+<h2>富平罐頭市場・飛機迷限定體驗・返回台灣</h2>
+<div class="date">7/9（四）</div>
+<div class="area">南浦洞・金海機場</div>
+</div>
+<div class="timeline">
+<div class="stop">
+<span class="transport-note">🚶 從Ground27步行</span>
+<div class="stop-time">早午餐＆採買</div>
+<div class="stop-title">🥟 富平罐頭市場</div>
+<div class="stop-kr">부평깡통시장</div>
+<div class="stop-note">大米餅辣炒年糕、魚糕、油豆腐包，邊吃邊採買最後伴手禮</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Bupyeong%20Kkangtong%20Market%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EB%B6%80%ED%8F%89%EA%B9%A1%ED%86%B5%EC%8B%9C%EC%9E%A5" rel="noopener" target="_blank">🧭 Naver</a>
+</div>
+</div>
+<div class="stop">
+<span class="transport-note">🚶 步行返回飯店</span>
+<div class="stop-time">中午</div>
+<div class="stop-title">🧳 Hotel Ground27 退房</div>
+<div class="stop-kr">호텔그라운드27</div>
+<div class="stop-note">整理行李，準備出發機場</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Hotel%20Ground27%20Nampodong%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%ED%98%B8%ED%85%94%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C27" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Bupyeong%20Kkangtong%20Market%20Busan&amp;destination=Hotel%20Ground27%20Nampodong%20Busan&amp;travelmode=walking" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚕／🚌 計程車或機場利木津巴士・約40-50分鐘</span>
+<div class="stop-title">✈️ 前往金海國際機場</div>
+<div class="stop-kr">김해국제공항</div>
+<div class="stop-note">💡 建議：若要去下方「跑道頭拍照點」，請安排在抵達機場航廈之前順路經過，一旦辦理登機、過安檢後就無法再離開</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Gimhae%20International%20Airport%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EA%B9%80%ED%95%B4%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Hotel%20Ground27%20Nampodong%20Busan&amp;destination=Gimhae%20International%20Airport%20Busan&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+<div class="stop">
+<span class="transport-note">🚕 計程車・約10-15分鐘（建議安排在抵達航廈前）</span>
+<div class="stop-time">飛機迷限定體驗</div>
+<div class="stop-title">📸 金海機場跑道頭拍照點</div>
+<div class="stop-kr">대저2동 활주로뷰포인트 (강서구)</div>
+<div class="stop-note">釜山江西區大田2洞，飛機降落時從頭頂幾公尺呼嘯而過，超震撼距離！捕捉客機降落精彩瞬間</div>
+<div class="btnrow">
+<a class="btn google" href="https://www.google.com/maps/search/?api=1&amp;query=Gimhae%20Airport%20runway%20viewpoint%20Daejeo-2dong%20Busan" rel="noopener" target="_blank">🌐 Google</a>
+<a class="btn naver" href="https://map.naver.com/p/search/%EB%8C%80%EC%A0%802%EB%8F%99%20%ED%99%9C%EC%A3%BC%EB%A1%9C%EB%B7%B0%ED%8F%AC%EC%9D%B8%ED%8A%B8" rel="noopener" target="_blank">🧭 Naver</a>
+<a class="btn route" href="https://www.google.com/maps/dir/?api=1&amp;origin=Gimhae%20International%20Airport%20Busan&amp;destination=Gimhae%20Airport%20runway%20viewpoint%20Daejeo-2dong%20Busan&amp;travelmode=driving" rel="noopener" target="_blank">🧭 路線 A→B</a></div>
+</div>
+</div>
+</section>
+<footer>
+  釜山 HAPPY GO 6天5夜｜依 0614 版旅遊手冊整理・時間與交通僅供參考，請以現場實際狀況為準
+</footer>
+</main>
+</body>
+</html>
